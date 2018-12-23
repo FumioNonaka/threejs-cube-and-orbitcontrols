@@ -12,10 +12,12 @@
 	}
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/99/three.js"></script>
+<script src="lib/OrbitControls.js"></script>
 <script>
 let camera;
 let scene;
 let renderer;
+let controls;
 
 function init() {
     const windowWidth = window.innerWidth;
@@ -31,7 +33,10 @@ function init() {
     const mesh = createCube(side, side, side);
     scene.add(mesh);
 
-    renderer.render(scene, camera);
+    controls = new THREE.OrbitControls(camera);
+    controls.autoRotate = true;
+    // renderer.render(scene, camera);
+    update();
 }
 function createRenderer(width, height) {
     const renderer = new THREE.WebGLRenderer({antialias: true});
@@ -45,6 +50,11 @@ function createCube(width, height, depth, texture) {
     var material = new THREE.MeshNormalMaterial();
     const cube = new THREE.Mesh(geometry, material);
     return cube;
+}
+function update() {
+    controls.update();
+    requestAnimationFrame(update);
+    renderer.render(scene, camera);
 }
 document.addEventListener('DOMContentLoaded', init);
 </script>
